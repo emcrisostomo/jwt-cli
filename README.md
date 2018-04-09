@@ -3,7 +3,7 @@
 jwt-cli
 =======
 
-`jwt-cli` is a GitHub API client for the UNIX shell.
+`jwt-cli` is a shell library to decode JWT tokens.
 
 Prerequisites
 -------------
