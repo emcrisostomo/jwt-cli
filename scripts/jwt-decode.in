@@ -35,6 +35,7 @@ typeset -a help_flag
 typeset -a verbose_flag
 typeset -a version_flag
 typeset -a base64_decode_cmd
+typeset -a jq_cmd
 
 # Output verbosity and logging
 exec 5>/dev/null
@@ -60,7 +61,7 @@ function __trap()
 }
 
 # Program dependencies
-typeset -a REQUIRED_PROGS=( jq )
+typeset -a REQUIRED_PROGS=( )
 
 function check_required_programs()
 {
@@ -142,12 +143,12 @@ function jwt_decode()
     }
 
   print_verbose "Header:"
-  base64_decode $(printf "%s" ${1} | cut -d "." -f 1) | jq '.'
+  base64_decode $(printf "%s" ${1} | cut -d "." -f 1)
   print_verbose "Payload:"
-  base64_decode $(printf "%s" ${1} | cut -d "." -f 2) | jq '.'
+  base64_decode $(printf "%s" ${1} | cut -d "." -f 2)
 }
 
-function prepare_cmd_paths()
+function prepare_base64_cmd()
 {
   command -v base64 > /dev/null 2>&1 &&
     {
@@ -163,6 +164,23 @@ function prepare_cmd_paths()
 
   print "Either coreutils' base64 or openssl is required." >&2
   return 1
+}
+
+function prepare_jq_cmd()
+{
+  command -v jq > /dev/null 2>&1 &&
+    {
+      jq_cmd=( jq \. )
+      return
+    }
+
+  jq_cmd=( tee )
+}
+
+function prepare_cmd_paths()
+{
+  prepare_base64_cmd
+  prepare_jq_cmd
 }
 
 function __main()
@@ -187,7 +205,7 @@ function __main()
 
   for token in $*
   do
-    jwt_decode ${token}
+    jwt_decode ${token} | ${jq_cmd}
   done
 }
 

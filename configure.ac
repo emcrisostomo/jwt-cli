@@ -34,11 +34,9 @@ AM_SILENT_RULES([yes])
 
 # Checks for programs.
 AC_PATH_PROG([BASE64_CMD],  [base64],  [no])
-AC_PATH_PROG([JQ_CMD],      [jq],      [no])
 AC_PATH_PROG([OPENSSL_CMD], [openssl], [no])
 AC_PATH_PROG([ZSH_CMD],     [zsh],     [no])
 
-AS_VAR_IF([JQ_CMD],      [no], [AC_MSG_ERROR([jq is required.])],      [])
 AS_VAR_IF([ZSH_CMD],     [no], [AC_MSG_ERROR([zsh is required.])],     [])
 
 AS_VAR_IF([BASE64_CMD],     [no],  [], [AS_VAR_SET([BASE64_ENABLED], [yes])])
