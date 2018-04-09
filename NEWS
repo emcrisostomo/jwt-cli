@@ -1,0 +1,51 @@
+NEWS
+****
+
+New in 0.4.0:
+
+  * Add create-issue.
+  * Add edit-issue.
+  * Add get-issue.
+  * Add get-repo-branch.
+  * Add list-assigned-issues.
+  * Add list-repo-branches.
+  * Add list-repo-releases.
+  * Add list-user-issues.
+  * Add list-org-issues.
+
+New in 0.3.0:
+
+  * Add list-teams.
+  * Add replace-topics.
+  * Add transfer-repo.
+
+New in 0.2.0:
+
+  * Add create-repo.
+  * Add delete-repo.
+  * Add edit-repo.
+  * Add get-repo.
+  * Add list-commits.
+  * Add list-contributors.
+  * Add list-languages.
+  * Add list-my-repos.
+  * Add list-notifications.
+  * Add list-notifications-count.
+  * Add list-org-repos.
+  * Add list-public-repos.
+  * Add list-repo-events.
+  * Add list-repo-issue-events.
+  * Add list-repo-issues.
+  * Add list-repo-notifications.
+  * Add list-repo-topics.
+  * Add list-repos.
+  * Add list-tags.
+  * Add rate-limit.
+  * Add --filter.
+  * Add --max-pages.
+  * Add pagination support.
+  * Add query string parameter support.
+
+New in 0.1.0:
+
+  * Initial release.

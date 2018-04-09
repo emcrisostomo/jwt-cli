@@ -1,0 +1,181 @@
+#!/usr/bin/env zsh
+# -*- vim:fenc=utf-8:et:sw=2:ts=2:sts=2
+#
+# Copyright (c) 2018 Enrico M. Crisostomo
+#
+# This program is free software; you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 3, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+# details.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+setopt local_options
+setopt local_traps
+unsetopt glob_subst
+unsetopt bash_rematch
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+PROG=${0}
+PROGNAME=${0:t}
+PROGDIR=${0:h}
+BUG_REPORT=@PACKAGE_BUGREPORT@
+PACKAGE_VERSION=@PACKAGE_VERSION@
+
+# getopts
+typeset -a help_flag
+typeset -a verbose_flag
+typeset -a version_flag
+
+# Output verbosity and logging
+exec 5>/dev/null
+
+function print_verbose()
+{
+  local log_message=${1:?Log message is required.}
+
+  printf -- "%s\n" ${log_message} 1>&5
+}
+
+# cleanup trap
+trap '__trap' INT TERM EXIT
+
+function __trap()
+{
+  local exit_code=$?
+  trap - EXIT
+
+  exec 5>&-
+
+  exit ${exit_code}
+}
+
+# Program dependencies
+typeset -a REQUIRED_PROGS=( jq openssl )
+
+function check_required_programs()
+{
+  for p in ${REQUIRED_PROGS}
+  do
+    command -v ${p} > /dev/null 2>&1 ||
+      {
+        >&2 print "Cannot find required program: ${p}"
+        exit 1
+      }
+  done
+}
+
+function print_version()
+{
+  print "${PROGNAME} ${PACKAGE_VERSION}"
+  print "Copyright (C) 2018 Enrico M. Crisostomo"
+  print "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>."
+  print "This is free software: you are free to change and redistribute it."
+  print "There is NO WARRANTY, to the extent permitted by law."
+  print
+  print "Written by Enrico M. Crisostomo"
+
+  exit 0
+}
+
+function print_usage()
+{
+  print "${PROGNAME} ${PACKAGE_VERSION}"
+  print
+  print "Usage:"
+  print "${PROGNAME} (options)* command"
+  print "${PROGNAME} -h"
+  print "${PROGNAME} -v"
+  print
+  print "Options:"
+  print " -h, --help     Print this message."
+  print " -v, --verbose  Print verbose output."
+  print "     --version  Print the program version."
+  print
+  print "See the man page for more information."
+  print
+  print "Report bugs to <https://github.com/emcrisostomo/jwt-cli/issues>."
+  print "${PROGNAME} home page: <https://github.com/emcrisostomo/jwt-cli>."
+
+  exit 0
+}
+
+function base64_decode()
+{
+  (( $# == 1 )) ||
+    {
+      print "Illegal number of arguments: $#"
+      return 1
+    }
+
+  local len=$(( ${#1} % 4 ))
+  local result=${1}
+
+  if [ $len -eq 2 ]
+  then
+    result="$1"'=='
+  elif [ $len -eq 3 ]
+  then
+    result="$1"'='
+  fi
+
+  print -r "$result" | tr '_-' '/+' | openssl enc -d -base64
+}
+
+function jwt_decode()
+{
+  (( $# == 1 )) ||
+    {
+      print "Illegal number of arguments: $#"
+      return 1
+    }
+  
+  base64_decode $(printf "%s" ${1} | cut -d "." -f 1) | jq '.'
+  base64_decode $(printf "%s" ${1} | cut -d "." -f 2) | jq '.'
+}
+
+function __main()
+{
+  check_required_programs
+
+  zparseopts -D -E \
+             h=help_flag    -help=help_flag            \
+             v=verbose_flag -verbose=verbose_flag      \
+                            -version=version_flag
+
+  (( ${#help_flag} ))    && print_usage
+  (( ${#verbose_flag} )) && exec 5>&2
+  (( ${#version_flag} )) && print_version
+
+  (( $# > 0 )) ||
+    {
+      >&2 print "Missing argument."
+      exit 2
+    }
+
+  for token in $*
+  do
+    jwt_decode ${token}
+  done
+}
+
+# main
+__main $*
+
+# Local variables:
+# coding: utf-8
+# mode: sh
+# eval: (sh-set-shell "zsh")
+# tab-width: 2
+# indent-tabs-mode: nil
+# sh-basic-offset: 2
+# sh-indentation: 2
+# End:
