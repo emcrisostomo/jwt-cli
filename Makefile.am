@@ -18,7 +18,7 @@ ACLOCAL_AMFLAGS = -I m4
 dist_doc_DATA  = README.md README.gnu-build-system
 dist_doc_DATA += AUTHORS CONTRIBUTING.md COPYING LICENSE NEWS
 
-bin_SCRIPTS  = scripts/jwt-cli
+bin_SCRIPTS  = scripts/jwt-decode
 CLEANFILES   = $(bin_SCRIPTS)
 
 dist-hook:

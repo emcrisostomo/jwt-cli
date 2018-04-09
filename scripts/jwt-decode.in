@@ -127,7 +127,9 @@ function base64_decode()
     result="$1"'='
   fi
 
-  print -r "$result" | tr '_-' '/+' | openssl enc -d -base64
+  print_verbose "Padded data: ${result}"
+
+  print -r "$result" | openssl enc -d -base64
 }
 
 function jwt_decode()
@@ -137,8 +139,10 @@ function jwt_decode()
       print "Illegal number of arguments: $#"
       return 1
     }
-  
+
+  print_verbose "Header:"
   base64_decode $(printf "%s" ${1} | cut -d "." -f 1) | jq '.'
+  print_verbose "Payload:"
   base64_decode $(printf "%s" ${1} | cut -d "." -f 2) | jq '.'
 }
 
