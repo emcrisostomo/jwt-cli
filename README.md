@@ -46,6 +46,46 @@ The following operation decodes a JWT token:
 
     $ jwt-decode token
 
+    {
+      "alg": "RS256",
+      "typ": "JWT",
+      "kid": "sbS_BWBm0GzfIQRnYWolcWDRnjqwDTY_Aq6Fn_boqKM"
+    }
+    {
+      "jti": "271151a3-db11-4f37-a724-4cf9957774f4",
+      "exp": 1530979706,
+      "nbf": 0,
+      "iat": 1523117306,
+      "iss": "https://domain.com/auth/realms/realm",
+      "aud": "nhs3-mobile-app",
+      "sub": "5132c417-d772-420e-b5db-401ea633dca1",
+      "typ": "Bearer",
+      "azp": "app",
+      "auth_time": 0,
+      "session_state": "84e6a759-e54d-4fd7-9fcf-bb51131aab89",
+      "acr": "1",
+      "allowed-origins": [
+        ""
+      ],
+      "realm_access": {
+        "roles": [
+          "offline_access",
+          "role",
+          "uma_authorization"
+        ]
+      },
+      "resource_access": {
+        "account": {
+          "roles": [
+            "manage-account",
+            "manage-account-links",
+            "view-profile"
+          ]
+        }
+      },
+      "custom-property": "1797"
+    }
+
 Bug Reports
 -----------
 
