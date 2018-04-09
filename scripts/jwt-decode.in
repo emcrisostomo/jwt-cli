@@ -34,6 +34,7 @@ PACKAGE_VERSION=@PACKAGE_VERSION@
 typeset -a help_flag
 typeset -a verbose_flag
 typeset -a version_flag
+typeset -a base64_decode_cmd
 
 # Output verbosity and logging
 exec 5>/dev/null
@@ -59,7 +60,7 @@ function __trap()
 }
 
 # Program dependencies
-typeset -a REQUIRED_PROGS=( jq openssl )
+typeset -a REQUIRED_PROGS=( jq )
 
 function check_required_programs()
 {
@@ -129,7 +130,7 @@ function base64_decode()
 
   print_verbose "Padded data: ${result}"
 
-  print -r "$result" | openssl enc -d -base64
+  print -r "$result" | ${base64_decode_cmd}
 }
 
 function jwt_decode()
@@ -146,9 +147,28 @@ function jwt_decode()
   base64_decode $(printf "%s" ${1} | cut -d "." -f 2) | jq '.'
 }
 
+function prepare_cmd_paths()
+{
+  command -v base64 > /dev/null 2>&1 &&
+    {
+      base64_decode_cmd=( base64 -D )
+      return
+    }
+
+  command -v openssl > /dev/null 2>&1 &&
+    {
+      base64_decode_cmd=( openssl enc -d -base64 )
+      return
+    }
+
+  print "Either coreutils' base64 or openssl is required." >&2
+  return 1
+}
+
 function __main()
 {
   check_required_programs
+  prepare_cmd_paths
 
   zparseopts -D -E \
              h=help_flag    -help=help_flag            \

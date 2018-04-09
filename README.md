@@ -11,7 +11,7 @@ Prerequisites
 `jwt-cli` requires the following programs to be present on the `${PATH}`:
 
   * `jq`
-  * `openssl`
+  * `base64` or `openssl`
   * `zsh`
 
 Getting jwt-cli

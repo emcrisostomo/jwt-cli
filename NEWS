@@ -1,6 +1,10 @@
 NEWS
 ****
 
+New in 0.2.0:
+
+  * Add support for using either base64 and openssl to decode base64 data.
+
 New in 0.1.0:
 
   * Add jwt-decode.
