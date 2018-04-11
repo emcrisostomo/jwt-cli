@@ -57,7 +57,7 @@ The following operation decodes a JWT token:
       "nbf": 0,
       "iat": 1523117306,
       "iss": "https://domain.com/auth/realms/realm",
-      "aud": "nhs3-mobile-app",
+      "aud": "app-name",
       "sub": "5132c417-d772-420e-b5db-401ea633dca1",
       "typ": "Bearer",
       "azp": "app",
@@ -69,9 +69,9 @@ The following operation decodes a JWT token:
       ],
       "realm_access": {
         "roles": [
-          "offline_access",
-          "role",
-          "uma_authorization"
+          "role0",
+          "role1",
+          "role2"
         ]
       },
       "resource_access": {
