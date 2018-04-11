@@ -10,7 +10,7 @@ Prerequisites
 
 `jwt-cli` requires the following programs to be present on the `${PATH}`:
 
-  * `jq`
+  * `jq`: optional.  If present, pretty output will be emitted.
   * `base64` or `openssl`
   * `zsh`
 
