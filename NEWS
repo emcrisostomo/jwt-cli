@@ -1,6 +1,10 @@
 NEWS
 ****
 
+New in 0.4.0:
+
+  * Add support to read tokens from standard input.
+
 New in 0.3.0:
 
   * Make jq optional.

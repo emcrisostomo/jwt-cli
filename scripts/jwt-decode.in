@@ -183,6 +183,12 @@ function prepare_cmd_paths()
   prepare_jq_cmd
 }
 
+function process_argument()
+{
+  local token=${1}
+  jwt_decode ${token} | ${jq_cmd}
+}
+
 function __main()
 {
   check_required_programs
@@ -197,6 +203,21 @@ function __main()
   (( ${#verbose_flag} )) && exec 5>&2
   (( ${#version_flag} )) && print_version
 
+  if [[ ! -t 0 ]]
+  then
+    (( $# == 0 )) || {
+      print "Arguments are not allowed when reading from standard input." >&2
+      return 1
+    }
+
+    while IFS= read -r token
+    do
+      process_argument ${token}
+    done
+
+    return 0
+  fi
+
   (( $# > 0 )) ||
     {
       >&2 print "Missing argument."
@@ -205,7 +226,7 @@ function __main()
 
   for token in $*
   do
-    jwt_decode ${token} | ${jq_cmd}
+    process_argument ${token}
   done
 }
 
