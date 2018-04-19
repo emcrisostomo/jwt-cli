@@ -152,7 +152,7 @@ function prepare_base64_cmd()
 {
   command -v base64 > /dev/null 2>&1 &&
     {
-      base64_decode_cmd=( base64 -D )
+      base64_decode_cmd=( base64 --decode )
       return
     }
 
