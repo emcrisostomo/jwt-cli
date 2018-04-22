@@ -1,6 +1,10 @@
 NEWS
 ****
 
+New in 0.5.0:
+
+  * Harmonize usage of base64 options between the BSD and the GNU version.
+
 New in 0.4.0:
 
   * Add support to read tokens from standard input.
