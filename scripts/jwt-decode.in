@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 # -*- vim:fenc=utf-8:et:sw=2:ts=2:sts=2
 #
-# Copyright (c) 2018 Enrico M. Crisostomo
+# Copyright (c) 2018-2019 Enrico M. Crisostomo
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -78,7 +78,7 @@ function check_required_programs()
 function print_version()
 {
   print "${PROGNAME} ${PACKAGE_VERSION}"
-  print "Copyright (C) 2018 Enrico M. Crisostomo"
+  print "Copyright (C) 2018-2019 Enrico M. Crisostomo"
   print "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>."
   print "This is free software: you are free to change and redistribute it."
   print "There is NO WARRANTY, to the extent permitted by law."
@@ -131,7 +131,7 @@ function base64_decode()
 
   print_verbose "Padded data: ${result}"
 
-  print -r "$result" | ${base64_decode_cmd}
+  print -r "$result" | tr -- '-_' '+/' | ${base64_decode_cmd}
 }
 
 function jwt_decode()
