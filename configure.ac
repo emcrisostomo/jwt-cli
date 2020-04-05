@@ -17,7 +17,7 @@
 #
 dnl Copyright (C) 2018-2019 Enrico M. Crisostomo
 AC_PREREQ([2.69])
-AC_INIT([jwt-cli], [0.7.0], [enrico.m.crisostomo@gmail.com])
+AC_INIT([jwt-cli], [0.7.1], [enrico.m.crisostomo@gmail.com], [], [https://github.com/emcrisostomo/jwt-cli])
 AC_COPYRIGHT([2018-2019 (C) Enrico M. Crisostomo])
 AC_REVISION([$Revision: 1.0.0$])
 AC_CONFIG_SRCDIR([scripts/jwt-decode.in])
