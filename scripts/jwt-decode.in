@@ -25,10 +25,10 @@ set -o nounset
 set -o pipefail
 
 PROG=${0}
-PROGNAME=${0:t}
-PROGDIR=${0:h}
-BUG_REPORT=@PACKAGE_BUGREPORT@
+PROGNAME=${PROG:t}
+PACKAGE_BUGREPORT=@PACKAGE_BUGREPORT@
 PACKAGE_VERSION=@PACKAGE_VERSION@
+PACKAGE_URL=@PACKAGE_URL@
 
 # getopts
 typeset -a help_flag
@@ -107,8 +107,9 @@ function print_usage()
   print
   print "See the man page for more information."
   print
-  print "Report bugs to <https://github.com/emcrisostomo/jwt-cli/issues>."
-  print "${PROGNAME} home page: <https://github.com/emcrisostomo/jwt-cli>."
+  print "Report bugs to <${PACKAGE_URL}/issues>."
+  print "Report bugs to <${PACKAGE_BUGREPORT}>."
+  print "${PROGNAME} home page: <${PACKAGE_URL}>."
 
   exit 0
 }
