@@ -36,6 +36,9 @@ typeset -a verbose_flag
 typeset -a version_flag
 typeset -a base64_decode_cmd
 typeset -a jq_cmd
+typeset token_header
+typeset token_body
+typeset token_signature
 
 # Output verbosity and logging
 exec 5>/dev/null
@@ -136,16 +139,38 @@ function base64_decode()
 
 function jwt_decode()
 {
+  local -a token_fragments
+  local token_header_b64
+  local token_body_b64
+  local token_signature_b64
+  local token_unknown
+
   (( $# == 1 )) ||
     {
       print "Illegal number of arguments: $#"
       return 1
     }
 
-  print_verbose "Header:"
-  base64_decode $(printf "%s" ${1} | cut -d "." -f 1)
-  print_verbose "Payload:"
-  base64_decode $(printf "%s" ${1} | cut -d "." -f 2)
+  token_fragments=( ${(@s/./)1} )
+
+  (( ${#token_fragments} >= 2 )) ||
+    {
+      print_verbose "Invalid token"
+      return 1
+    }
+
+  (( ${#token_fragments} <= 3 )) ||
+    {
+      print_verbose "Unknown token fragments: ${token_fragments[4]}"
+    }
+
+  token_header=$(base64_decode ${token_fragments[1]})
+  token_body=$(base64_decode ${token_fragments[2]})
+
+  if (( ${#token_fragments} >= 3 ))
+  then
+    token_signature=$(base64_decode ${token_fragments[3]})
+  fi
 }
 
 function prepare_base64_cmd()
@@ -186,7 +211,12 @@ function prepare_cmd_paths()
 function process_argument()
 {
   local token=${1}
-  jwt_decode ${token} | ${jq_cmd}
+  jwt_decode ${token}
+
+  print_verbose "Header:"
+  print -r -- ${token_header} | ${jq_cmd}
+  print_verbose "Payload:"
+  print -r -- ${token_body} | ${jq_cmd}
 }
 
 function __main()
