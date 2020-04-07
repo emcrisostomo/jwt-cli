@@ -94,8 +94,12 @@ function print_usage()
 {
   print "${PROGNAME} ${PACKAGE_VERSION}"
   print
+  print "${PROGNAME} dumps the contents of the JWT token specified using the base64"
+  print "encoding.  The token can be read either from a command line argument or"
+  print "from standard input."
+  print
   print "Usage:"
-  print "${PROGNAME} (options)* command"
+  print "${PROGNAME} (options)* token"
   print "${PROGNAME} -h"
   print "${PROGNAME} -v"
   print
