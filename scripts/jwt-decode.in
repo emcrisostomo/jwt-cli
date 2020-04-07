@@ -154,7 +154,7 @@ function jwt_decode()
 
   (( ${#token_fragments} >= 2 )) ||
     {
-      print_verbose "Invalid token"
+      print "Invalid token." >&2
       return 1
     }
 
@@ -165,6 +165,22 @@ function jwt_decode()
 
   token_header=$(base64_decode ${token_fragments[1]})
   token_body=$(base64_decode ${token_fragments[2]})
+
+  if ! jq . > /dev/null 2>&1 <<< ${token_header}
+  then
+    {
+      print "Invalid token header."
+      return 1
+    }
+  fi
+
+  if ! jq . > /dev/null 2>&1 <<< ${token_body}
+  then
+    {
+      print "Invalid token payload."
+      return 1
+    }
+  fi
 
   if (( ${#token_fragments} >= 3 ))
   then
@@ -207,7 +223,7 @@ function prepare_cmd_paths()
   prepare_jq_cmd
 }
 
-function process_argument()
+function process_token()
 {
   local token=${1}
   jwt_decode ${token}
@@ -241,7 +257,7 @@ function __main()
 
     while IFS= read -r token
     do
-      process_argument ${token}
+      process_token ${token}
     done
 
     return 0
@@ -255,7 +271,7 @@ function __main()
 
   for token in $*
   do
-    process_argument ${token}
+    process_token ${token}
   done
 }
 
