@@ -1,5 +1,5 @@
 #                                               -*- Autoconf -*-
-# Copyright (C) 2018-2019 Enrico M. Crisostomo
+# Copyright (C) 2018-2020 Enrico M. Crisostomo
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -15,10 +15,10 @@
 #
 # Process this file with autoconf to produce a configure script.
 #
-dnl Copyright (C) 2018-2019 Enrico M. Crisostomo
+dnl Copyright (C) 2018-2020 Enrico M. Crisostomo
 AC_PREREQ([2.69])
 AC_INIT([jwt-cli], [0.7.1], [enrico.m.crisostomo@gmail.com], [], [https://github.com/emcrisostomo/jwt-cli])
-AC_COPYRIGHT([2018-2019 (C) Enrico M. Crisostomo])
+AC_COPYRIGHT([2018-2020 (C) Enrico M. Crisostomo])
 AC_REVISION([$Revision: 1.0.0$])
 AC_CONFIG_SRCDIR([scripts/jwt-decode.in])
 AC_CONFIG_AUX_DIR([config])
